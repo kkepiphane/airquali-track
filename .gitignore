@@ -1,0 +1,39 @@
+# === Python ===
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# === Logs ===
+logs/
+*.log
+
+# === Environnements virtuels ===
+venv/
+.env
+*.env
+
+# === Docker ===
+# Volumes et données persistantes
+*.pid
+*.sock
+*.pid.lock
+.docker/
+docker-data/
+tmp/
+
+# === Airflow ===
+airflow.cfg
+unittests.cfg
+webserver_config.py
+
+# Dossiers générés automatiquement
+airflow_home/
+dags/__pycache__/
+plugins/__pycache__/
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
