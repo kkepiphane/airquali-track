@@ -5,6 +5,7 @@ from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 import boto3
 from botocore.client import Config
+from airflow.models import Variable
 
 # Default args for the DAG
 default_args = {
@@ -38,7 +39,16 @@ with DAG(
 
         BUCKET_NAME = 'raw'
         url = "https://api.openaq.org/v3/latest?limit=1000"
-        response = requests.get(url)
+
+        headers = {
+            "X-API-Key": Variable.get("OPENAQ_API_KEY")
+        }
+
+        response = requests.get(url, headers=headers)
+
+        if response.status_code != 200:
+            raise Exception(f"Erreur API OpenAQ: {response.status_code}, {response.text}")
+
         data = response.json()
 
         current_time = datetime.utcnow().strftime("%Y-%m-%d_%H-%M-%S")

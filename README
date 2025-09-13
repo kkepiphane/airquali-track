@@ -1,0 +1,25 @@
+##  Pour démarrer les conteneurs
+docker-compose up -d
+## Pour créer
+```bash
+    docker exec -it airquali-track-postgres-1 psql -U admin -d airquality
+
+## Exécutez cette requête SQL pour créer la table
+    CREATE TABLE IF NOT EXISTS air_quality_metrics (
+        id SERIAL PRIMARY KEY,
+        location_name VARCHAR(255),
+        city VARCHAR(255),
+        country VARCHAR(255),
+        parameter VARCHAR(50),  -- e.g., pm25, pm10, so2
+        value DOUBLE PRECISION,
+        unit VARCHAR(20),
+        last_updated_utc TIMESTAMP,
+        lat DOUBLE PRECISION,
+        lon DOUBLE PRECISION,
+        loaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    -- Créer un index pour accélérer les requêtes par type de polluant et par lieu
+    CREATE INDEX IF NOT EXISTS idx_parameter ON air_quality_metrics(parameter);
+    CREATE INDEX IF NOT EXISTS idx_location ON air_quality_metrics(location_name);
+    CREATE INDEX IF NOT EXISTS idx_country ON air_quality_metrics(country);
