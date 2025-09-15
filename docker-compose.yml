@@ -58,14 +58,14 @@ services:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://admin:password@postgres/airquality
       AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-      AIRFLOW__CORE__FERNET_KEY: ''
-      AIRFLOW__WEBSERVER__SECRET_KEY: ''
+      AIRFLOW__CORE__FERNET_KEY: '0Eb-BsQq9PmAt1FbRit9ZTB2lZOLA2pUWB_ziOkZ0G0='
+      AIRFLOW__WEBSERVER__SECRET_KEY: 'b1b0685b1fb92d1de5b3a4598a2322acd73f559b6191615ede1bcdde18806cde'
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
     ports:
-      - "8080:8080"
+      - "5050:8080"
     command: webserver
     depends_on:
       - postgres
@@ -76,7 +76,8 @@ services:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://admin:password@postgres/airquality
       AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-      AIRFLOW__CORE__FERNET_KEY: ''
+      AIRFLOW__CORE__FERNET_KEY: '0Eb-BsQq9PmAt1FbRit9ZTB2lZOLA2pUWB_ziOkZ0G0='
+      AIRFLOW__WEBSERVER__SECRET_KEY : 'b1b0685b1fb92d1de5b3a4598a2322acd73f559b6191615ede1bcdde18806cde'
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs

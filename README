@@ -19,9 +19,9 @@ Il inclut plusieurs services pour le stockage, l’orchestration, l’analyse et
 
 ### Lancer les conteneurs
 ```bash
-docker-compose up -d
+    docker-compose up -d
 
-⚙️ Initialisation
+## Initialisation
     1. Initialiser la base Airflow
     docker-compose run --rm airflow-webserver airflow db init
 
@@ -49,9 +49,31 @@ docker-compose up -d
     CREATE INDEX IF NOT EXISTS idx_location ON air_quality_metrics(location_name);
     CREATE INDEX IF NOT EXISTS idx_country ON air_quality_metrics(country);
 
+## pour installer le paquet cryptography
+    pip install cryptography
+
+## Générez une Fernet Key "Fernet KEY "
+    python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+
+## Générez une Secret Key
+    python -c "import secrets; print(secrets.token_hex(32))"
+
 ## Debug et logs
     docker-compose logs -f airflow-webserver
     Vérifier un autre service
+
+## Pour céer les identifiants et se connecter la plateforme airflow
+    docker-compose run --rm airflow-webserver airflow users create `
+    --username admin `
+    --firstname Admin `
+    --lastname User `
+    --role Admin `
+    --email admin@example.com `
+    --password admin
+```
+
+## pour ajouter une clé pour se connecter et importer les données.
+    airflow variables set OPENAQ_API_KEY "ta_cle_api"
 
 Interfaces disponibles
 
@@ -60,7 +82,7 @@ Interfaces disponibles
 
     PostgreSQL : localhost:5432 (user: admin, password: password)
 
-    Airflow Webserver : http://localhost:8080
+    Airflow Webserver : http://localhost:5050
 
     Jupyter PySpark Notebook : http://localhost:8888
     (token : airquality)
