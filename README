@@ -1,16 +1,41 @@
-##  Pour démarrer les conteneurs
-docker-compose up -d
-## Pour créer
+# 🚀 AirQuality Data Platform
+
+Ce projet met en place une **plateforme de traitement et d’analyse de données qualité de l’air** à l’aide de **Docker Compose**.  
+Il inclut plusieurs services pour le stockage, l’orchestration, l’analyse et la visualisation des données.
+
+---
+
+## 📦 Services inclus
+
+- **MinIO** : Stockage S3 local pour les fichiers et datasets.  
+- **PostgreSQL** : Data Warehouse pour stocker les métriques qualité de l’air.  
+- **Airflow** : Orchestration des pipelines de données.  
+- **PySpark (Jupyter Notebook)** : Analyse et transformation des données distribuées.  
+- **Grafana** : Visualisation des données qualité de l’air.  
+
+---
+
+## ▶️ Démarrage
+
+### Lancer les conteneurs
 ```bash
+docker-compose up -d
+
+⚙️ Initialisation
+    1. Initialiser la base Airflow
+    docker-compose run --rm airflow-webserver airflow db init
+
+## Créer la base et la table dans PostgreSQL
+
     docker exec -it airquali-track-postgres-1 psql -U admin -d airquality
 
-## Exécutez cette requête SQL pour créer la table
+## Exécuter le script SQL :
     CREATE TABLE IF NOT EXISTS air_quality_metrics (
         id SERIAL PRIMARY KEY,
         location_name VARCHAR(255),
         city VARCHAR(255),
         country VARCHAR(255),
-        parameter VARCHAR(50),  -- e.g., pm25, pm10, so2
+        parameter VARCHAR(50),  -- ex: pm25, pm10, so2
         value DOUBLE PRECISION,
         unit VARCHAR(20),
         last_updated_utc TIMESTAMP,
@@ -19,7 +44,26 @@ docker-compose up -d
         loaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
-    -- Créer un index pour accélérer les requêtes par type de polluant et par lieu
+    -- Index pour accélérer les requêtes
     CREATE INDEX IF NOT EXISTS idx_parameter ON air_quality_metrics(parameter);
     CREATE INDEX IF NOT EXISTS idx_location ON air_quality_metrics(location_name);
     CREATE INDEX IF NOT EXISTS idx_country ON air_quality_metrics(country);
+
+## Debug et logs
+    docker-compose logs -f airflow-webserver
+    Vérifier un autre service
+
+Interfaces disponibles
+
+    MinIO Console : http://localhost:9001
+    Identifiant : minioadmin / Mot de passe : minioadmin
+
+    PostgreSQL : localhost:5432 (user: admin, password: password)
+
+    Airflow Webserver : http://localhost:8080
+
+    Jupyter PySpark Notebook : http://localhost:8888
+    (token : airquality)
+
+    Grafana : http://localhost:3000
+    (user: admin, password: admin)
